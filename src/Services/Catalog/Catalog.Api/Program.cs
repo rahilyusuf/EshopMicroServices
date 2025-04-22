@@ -1,3 +1,7 @@
+using MapsterMapper;
+using Microsoft.OpenApi.Models;
+
+
 namespace Catalog.Api
 {
     public class Program
@@ -8,10 +12,37 @@ namespace Catalog.Api
 
             //add Services to the container
 
-            var app = builder.Build();
 
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(
+                );
+
+            
+
+
+            builder.Services.AddMediatR(config=>
+                config.RegisterServicesFromAssembly(typeof(Program).Assembly)
+                );
+
+            builder.Services.AddScoped(typeof(IMapper), provider=>TypeAdapterConfig.GlobalSettings);
+
+            var app = builder.Build();
             //Configure the HTTP request pipeline
 
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
 
 
             app.Run();
