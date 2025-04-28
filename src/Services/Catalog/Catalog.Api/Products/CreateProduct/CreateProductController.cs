@@ -8,7 +8,7 @@
 
         public CreateProductController(ISender sender)
         {
-            _sender = sender;
+            _sender = sender;   
         }
         [HttpPost]
         [ProducesResponseType(typeof(CreateProductResponse), StatusCodes.Status201Created)]

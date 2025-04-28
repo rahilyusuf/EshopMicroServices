@@ -7,10 +7,12 @@
     <UserSecretsId>5e69a15c-48d7-41b8-800d-8c00cc9f0a7a</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Marten" Version="7.40.0" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.6.24" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
