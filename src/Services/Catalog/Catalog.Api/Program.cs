@@ -15,10 +15,7 @@ namespace Catalog.Api
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(
-                );
-
-            
+            builder.Services.AddSwaggerGen();
 
 
             builder.Services.AddMediatR(config=>

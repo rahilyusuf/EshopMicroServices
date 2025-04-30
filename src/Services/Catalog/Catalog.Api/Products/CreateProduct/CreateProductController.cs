@@ -10,11 +10,11 @@
         {
             _sender = sender;   
         }
-        [HttpPost]
+       
         [ProducesResponseType(typeof(CreateProductResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
-
+        
         public async Task<IActionResult> CreateProduct(CreateProductRequest request)
         { 
             var command = request.Adapt<CreateProductCommand>();
