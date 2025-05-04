@@ -2,6 +2,7 @@
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class CreateProductController : ControllerBase
     {
         private readonly ISender _sender;
@@ -14,7 +15,7 @@
         [ProducesResponseType(typeof(CreateProductResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
-        
+        [HttpPost]
         public async Task<IActionResult> CreateProduct(CreateProductRequest request)
         { 
             var command = request.Adapt<CreateProductCommand>();
