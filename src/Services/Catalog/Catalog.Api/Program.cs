@@ -1,6 +1,3 @@
-using MapsterMapper;
-using Microsoft.OpenApi.Models;
-
 
 namespace Catalog.Api
 {
@@ -17,10 +14,13 @@ namespace Catalog.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-
-            builder.Services.AddMediatR(config=>
-                config.RegisterServicesFromAssembly(typeof(Program).Assembly)
+            var assembly = typeof(Program).Assembly;
+            builder.Services.AddMediatR(config => {
+                config.RegisterServicesFromAssembly(assembly);
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                }
                 );
+            builder.Services.AddValidatorsFromAssembly(assembly);
 
             builder.Services.AddScoped(typeof(IMapper), provider=>TypeAdapterConfig.GlobalSettings);
 
@@ -30,8 +30,14 @@ namespace Catalog.Api
 
             }).UseLightweightSessions();
 
+            builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
             var app = builder.Build();
+
+
             //Configure the HTTP request pipeline
+
+            app.UseExceptionHandler(options => { });
 
             if (app.Environment.IsDevelopment())
             {

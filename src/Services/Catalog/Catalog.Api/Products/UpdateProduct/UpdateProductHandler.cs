@@ -13,7 +13,20 @@
     (
         bool IsSuccess
     );  
-internal class UpdateProductHandler(IDocumentSession session, ILogger<UpdateProductHandler> logger) :
+    public class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
+    {
+        public UpdateProductValidator()
+        {
+            RuleFor( x => x.Id ).NotEmpty().WithMessage("Id is required.");
+            RuleFor(x => x.Name)
+                .NotEmpty()
+                .WithMessage("Name is required.").Length(2, 100).WithMessage("Name must be between 2 and 100 characters.");
+            RuleFor(x => x.Price).GreaterThan(0)
+                .WithMessage("Price must be greater than 0.");
+
+        }
+    }
+    internal class UpdateProductHandler(IDocumentSession session, ILogger<UpdateProductHandler> logger) :
             ICommandHandler<UpdateProductCommand, UpdateProductResult>
     {
         public async Task<UpdateProductResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
