@@ -1,12 +1,12 @@
 ﻿
 namespace Catalog.Api.Products.GetProductById
 {
-    internal class GetProductByIdQueryHandler (IDocumentSession session, ILogger<GetProductByIdQueryHandler> logger):
+    internal class GetProductByIdQueryHandler (IDocumentSession session):
         IQueryHandler<GetProductByIdRequest, GetProductByIdResponse>
     {
         public async Task<GetProductByIdResponse> Handle(GetProductByIdRequest query, CancellationToken cancellationToken)
         {
-            logger.LogInformation("GetProductByIdQueryHandler.Handle Called with {@Query}:", query);
+            
             var product = await session.LoadAsync<Product>(query.Id, cancellationToken);
             if (product == null)
             {

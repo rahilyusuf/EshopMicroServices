@@ -12,11 +12,12 @@ namespace Catalog.Api.Products.GetProducts
                 _sender = sender;
             }
             [HttpGet]
-            public async Task<IActionResult> GetProducts(CancellationToken cancellationToken)
+            public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery request, CancellationToken cancellationToken)
             {
-                var query = new GetProductsQuery();
+                var query = request.Adapt<GetProductsQuery>();
                 var result = await _sender.Send(query, cancellationToken);
-                return Ok(result);
+            var response = result.Adapt<GetProductResponse>();
+            return Ok(result);
             }
         }
     }

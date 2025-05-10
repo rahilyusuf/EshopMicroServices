@@ -1,15 +1,14 @@
-﻿using BuildingBlocks.CQRS;
-
+﻿
 namespace Catalog.Api.Products.GetProducts
 {
     
-    internal class GetProductsQueryHandler(IDocumentSession session, ILogger<GetProductsQueryHandler> logger)
+    internal class GetProductsQueryHandler(IDocumentSession session)
         : IQueryHandler<GetProductsQuery,List<GetProductResponse>>
     {
         public async Task<List<GetProductResponse>> Handle(GetProductsQuery query, CancellationToken cancellationToken)
         {
-            logger.LogInformation("GetProductsQueryHandler.Handle Called with {@Query}:", query);
-            var products = await session.Query<Product>().ToListAsync(cancellationToken);
+            
+            var products = await session.Query<Product>().ToPagedListAsync(query.PageNumber ?? 1 ,query.PageSize ?? 10, cancellationToken);
            
             // Map Product → GetProductResponse
             var response = products.Select(p => new GetProductResponse(
