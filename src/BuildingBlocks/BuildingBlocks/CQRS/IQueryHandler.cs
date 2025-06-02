@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BuildingBlocks.CQRS
 {
-    public interface IQuerry<in TQuerry, TResponse> : IRequestHandler<TQuerry,TResponse>
-        where TQuerry : IQuerry<TResponse>
+    public interface IQueryHandler<in TQuery, TResponse> : IRequestHandler<TQuery,TResponse>
+        where TQuery : IQuery<TResponse>
         where TResponse : notnull
     {
 
