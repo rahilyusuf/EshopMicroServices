@@ -7,10 +7,13 @@ namespace BuildingBlocks.Exceptions
         {
         }
 
-        public NotFoundException(string message, string details) : base(message)
+        //public NotFoundException(string message, string details) : base(message)
+        //{
+        //    Details = details;
+        //}
+        public NotFoundException(string name, object key) : base($"Entity \"{name}\" ({key}) was not found.")
         {
-            Details = details;
         }
-        public string? Details { get;}
+        //public string? Details { get; }
     }
 }
