@@ -1,5 +1,6 @@
 using Basket.API.Data;
 using BuildingBlocks.Exceptions.Handler;
+using Discount.Grpc;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Caching.Distributed;
@@ -18,6 +19,7 @@ namespace Basket.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //Application Services
             var assembly = typeof(Program).Assembly;
             builder.Services.AddMediatR(cfg =>
             {
@@ -26,6 +28,7 @@ namespace Basket.API
                 cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
 
+            //Data Services
             builder.Services.AddMarten(options =>
             {
                 options.Connection(builder.Configuration.GetConnectionString("Database")!);
@@ -50,6 +53,23 @@ namespace Basket.API
                 options.InstanceName = "BasketInstance";
             });
 
+            //Tdo: Add gRPC client for discount service
+            builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+            {
+                options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+            })
+            .ConfigurePrimaryHttpMessageHandler(()=>
+            {
+                var handler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback =
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+                return handler;// this method only used for developement purposes, in production we should use proper certificate validation
+            });
+
+
+            //Cross Cutting Services
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
             builder.Services.AddHealthChecks()
                 .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
