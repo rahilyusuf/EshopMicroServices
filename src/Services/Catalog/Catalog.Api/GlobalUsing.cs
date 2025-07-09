@@ -2,3 +2,13 @@
 global using Microsoft.AspNetCore.Mvc;
 global using Mapster;
 global using Catalog.API.Products.CreateProduct;
+global using BuildingBlocks.CQRS;
+global using Catalog.Api.Models;
+global using Marten;
+global using Catalog.Api.Exceptions;
+global using FluentValidation;
+global using BuildingBlocks.Behaviors;
+global using MapsterMapper;
+global using BuildingBlocks.Exceptions.Handler;
+global using Catalog.Api.Data;
+global using Marten.Pagination;
